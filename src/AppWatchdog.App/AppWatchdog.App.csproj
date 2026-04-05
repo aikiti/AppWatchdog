@@ -5,7 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ApplicationIcon>..\..\assets\icon.ico</ApplicationIcon>
+
     <AssemblyName>AppWatchdog</AssemblyName>
     <Version>1.0.0</Version>
   </PropertyGroup>
