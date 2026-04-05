@@ -1,0 +1,30 @@
+## .NET
+bin/
+obj/
+dist/
+publish/
+
+## IDE
+.vs/
+.vscode/
+*.user
+*.suo
+*.csproj.user
+
+## Build
+*.nupkg
+*.snupkg
+
+## OS
+.DS_Store
+Thumbs.db
+
+## App runtime files
+config/appsettings.json
+state/state.json
+logs/
+
+## Secrets
+*.pfx
+*.key
+.claude/handoff_latest.md

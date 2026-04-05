@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g., v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Determine version
+      id: version
+      shell: bash
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+        else
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build & Publish (win-x64, single-file, self-contained)
+      run: |
+        dotnet publish src/AppWatchdog.App/AppWatchdog.App.csproj `
+          -c Release `
+          -r win-x64 `
+          --self-contained true `
+          /p:PublishSingleFile=true `
+          /p:Version=${{ steps.version.outputs.tag }} `
+          -o dist
+
+    - name: Copy config example to dist
+      run: |
+        mkdir dist\config
+        copy config\appsettings.example.json dist\config\appsettings.example.json
+
+    - name: Create ZIP
+      shell: pwsh
+      run: |
+        $tag = "${{ steps.version.outputs.tag }}"
+        $zipName = "AppWatchdog_win-x64_${tag}.zip"
+        Compress-Archive -Path dist\* -DestinationPath $zipName
+        echo "ZIP_NAME=$zipName" >> $env:GITHUB_ENV
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ steps.version.outputs.tag }}
+        name: "AppWatchdog ${{ steps.version.outputs.tag }}"
+        body: |
+          ## AppWatchdog ${{ steps.version.outputs.tag }}
+
+          Windows x64 single-file executable (self-contained, no .NET runtime needed).
+
+          ### Quick Start
+          1. Download and extract the ZIP
+          2. Copy `config/appsettings.example.json` to `config/appsettings.json`
+          3. Edit `config/appsettings.json` with your targets
+          4. Run `AppWatchdog.exe`
+
+          See [README](https://github.com/${{ github.repository }}/blob/main/README.md) for full documentation.
+        files: ${{ env.ZIP_NAME }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,16 @@
+{
+  "targets": {
+    "my-app": {
+      "targetId": "my-app",
+      "paused": false,
+      "pausedAt": null,
+      "lastStopCommandAt": null,
+      "lastRestartAt": null,
+      "restartCountInWindow": 0,
+      "windowStartTime": null,
+      "cooldownUntil": null,
+      "consecutiveHealthFailures": 0
+    }
+  },
+  "lastSaved": "2024-01-01T00:00:00Z"
+}
