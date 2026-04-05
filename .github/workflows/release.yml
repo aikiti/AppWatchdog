@@ -31,10 +31,12 @@ jobs:
       shell: bash
       run: |
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          TAG="${{ github.event.inputs.tag }}"
         else
-          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          TAG="${GITHUB_REF#refs/tags/}"
         fi
+        echo "tag=$TAG" >> $GITHUB_OUTPUT
+        echo "semver=${TAG#v}" >> $GITHUB_OUTPUT
 
     - name: Restore dependencies
       run: dotnet restore
@@ -46,7 +48,7 @@ jobs:
           -r win-x64 `
           --self-contained true `
           /p:PublishSingleFile=true `
-          /p:Version=${{ steps.version.outputs.tag }} `
+          /p:Version=${{ steps.version.outputs.semver }} `
           -o dist
 
     - name: Copy config example to dist
