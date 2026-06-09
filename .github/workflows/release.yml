@@ -55,6 +55,7 @@ jobs:
       run: |
         mkdir dist\config
         copy config\appsettings.example.json dist\config\appsettings.example.json
+        copy docs\AppWatchdog_Windows_User_Manual_JA.docx dist\AppWatchdog_Windows_User_Manual_JA.docx
 
     - name: Create ZIP
       shell: pwsh
@@ -79,6 +80,7 @@ jobs:
           2. Copy `config/appsettings.example.json` to `config/appsettings.json`
           3. Edit `config/appsettings.json` with your targets
           4. Run `AppWatchdog.exe`
+          5. See `AppWatchdog_Windows_User_Manual_JA.docx` for the Japanese Windows setup guide
 
           See [README](https://github.com/${{ github.repository }}/blob/main/README.md) for full documentation.
         files: ${{ env.ZIP_NAME }}

@@ -31,6 +31,7 @@ jobs:
       run: |
         mkdir dist\config
         copy config\appsettings.example.json dist\config\appsettings.example.json
+        copy docs\AppWatchdog_Windows_User_Manual_JA.docx dist\AppWatchdog_Windows_User_Manual_JA.docx
 
     - name: Upload artifact (temporary)
       uses: actions/upload-artifact@v4

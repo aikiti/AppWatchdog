@@ -46,6 +46,8 @@ def check_required_files() -> None:
         ".gitignore",
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
+        "docs/WINDOWS_USER_MANUAL_JA.md",
+        "docs/AppWatchdog_Windows_User_Manual_JA.docx",
     ]
     missing = [f for f in required if not (ROOT / f).exists()]
     if missing:

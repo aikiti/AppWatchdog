@@ -2,6 +2,10 @@
 
 任意のWindowsアプリケーション（EXE）を監視し、落ちたら条件に従って自動再起動する汎用ウォッチドッグツールです。
 
+## 操作マニュアル
+
+Windowsでのダウンロード、初期設定、動作確認、自動起動、トラブル対応は、[AppWatchdog Windows 操作マニュアル](docs/WINDOWS_USER_MANUAL_JA.md)を参照してください。Word版は[こちら](docs/AppWatchdog_Windows_User_Manual_JA.docx)です。
+
 ## 機能一覧
 
 - **複数ターゲット監視**: 複数のアプリケーションを同時に監視・自動再起動
@@ -61,11 +65,17 @@ config\appsettings.example.json → config\appsettings.json にコピー
 
 ### 4. 自動起動設定
 
+手軽に設定する場合は、`Windowsキー + R` で `shell:startup` を開き、`AppWatchdog.exe` のショートカットを配置します。
+
+タスクスケジューラを使用する場合:
+
 ```
 AppWatchdog.Cli.exe install-task
 ```
 
 GUIからも「Install Task Scheduler」ボタンで設定可能です。
+
+スタートアップフォルダーとタスクスケジューラの両方へは登録しないでください。
 
 ### 5. リリース（開発者向け）
 
